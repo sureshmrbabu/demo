@@ -11,8 +11,12 @@ try{
             credentialsId: 'sureshmrbabu',
             branch: 'master'
      }
+     stage('build'){
+             withMaven(maven: 'mvn') {
+                 sh "mvn clean install"
+             }
+         }
       stage('Build docker') {
-             sh "mvn clean install"
              dockerImage = docker.build("demo-deploy:${env.BUILD_NUMBER}")
       }
 
