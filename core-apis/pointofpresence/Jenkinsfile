@@ -12,6 +12,7 @@ try{
             branch: 'master'
      }
       stage('Build docker') {
+             sh "mvn clean install"
              dockerImage = docker.build("demo-deploy:${env.BUILD_NUMBER}")
       }
 
