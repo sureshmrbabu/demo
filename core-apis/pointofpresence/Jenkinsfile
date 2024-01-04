@@ -1,24 +1,24 @@
 node {
-    def WORKSPACE = "/Users/suresh.raj/Downloads/demo2"
-    def dockerImageTag = "RestService-deploy${env.BUILD_NUMBER}"
+    def WORKSPACE = "/Users/suresh.raj/Downloads/pmm-demo"
+    def dockerImageTag = "demo-deploy${env.BUILD_NUMBER}"
 
 try{
      notifyBuild('STARTED')
      stage('Clone Repo') {
         // for display purposes
         // Get some code from a GitHub repository
-        git url: 'https://github.com/sureshmrbabu/RestService.git',
+        git url: 'https://github.com/sureshmrbabu/demo.git',
             credentialsId: 'sureshmrbabu',
             branch: 'master'
      }
       stage('Build docker') {
-             dockerImage = docker.build("RestService-deploy:${env.BUILD_NUMBER}")
+             dockerImage = docker.build("demo-deploy:${env.BUILD_NUMBER}")
       }
 
       stage('Deploy docker'){
               echo "Docker Image Tag Name: ${dockerImageTag}"
-              sh "docker stop RestService-deploy || true && docker rm RestService-deploy || true"
-              sh "docker run --name RestService-deploy -d -p 8081:8081 RestService-deploy:${env.BUILD_NUMBER} -v $(which docker):/usr/bin/docker"
+              sh "docker stop demo-deploy || true && docker rm demo-deploy || true"
+              sh "docker run --name demo-deploy -d -p 8081:8081 demo-deploy:${env.BUILD_NUMBER} -v $(which docker):/usr/bin/docker"
       }
 }catch(e){
     currentBuild.result = "FAILED"
